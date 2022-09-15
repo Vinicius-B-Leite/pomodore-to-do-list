@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, CollectionReference, collection, } from "@firebase/firestore";
+import { getFirestore, CollectionReference, collection, } from "firebase/firestore";
 import { ITarefa } from "../types/ITarefa";
 
 const firebaseConfig = {
@@ -16,4 +16,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export const colecaoTarefas = collection(db, 'tarefas') as CollectionReference<ITarefa>
+export const colecaoTarefas = collection(db, 'tarefa') as CollectionReference<ITarefa>
