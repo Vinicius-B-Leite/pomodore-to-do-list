@@ -2,10 +2,11 @@ import React, { FlatList, StatusBar, Text, View } from 'react-native'
 import { useState, useEffect } from 'react'
 import { Conteiner } from './styles'
 import FloatButton from '../../components/floatButton'
-import Header from '../header'
+import Header from './header'
 import { getDocs } from "firebase/firestore";
 import { colecaoTarefas } from '../../firebase/firebase'
 import { ITarefa } from '../../types/ITarefa'
+import Item from './item'
 
 //const querySnapshot = await getDocs(collection(db, "users"));
 //querySnapshot.forEach((doc) => {
@@ -33,7 +34,7 @@ export default function Home() {
             <FloatButton />
             <FlatList
                 data={tarefas}
-                renderItem={item => <Text style={{color: 'white'}}>{item.item.descricao}</Text>}
+                renderItem={({item}) => <Item dados={item}/>}
                 keyExtractor={item => item.id}
             />
         </Conteiner>
