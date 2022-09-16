@@ -5,7 +5,7 @@ import { useTheme } from 'styled-components/native';
 
 
 interface Props {
-    funcao: ()=>void
+    funcao: () => void
 }
 export default function FloatButton({funcao}: Props){
     const tema = useTheme()

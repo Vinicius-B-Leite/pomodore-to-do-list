@@ -8,14 +8,14 @@ import { colecaoTarefas } from '../../firebase/firebase'
 import { ITarefa } from '../../types/ITarefa'
 import Item from './item'
 import { useNavigation } from '@react-navigation/native'
+import { RootStackParamList } from '../../routes/models'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
-//const querySnapshot = await getDocs(collection(db, "users"));
-//querySnapshot.forEach((doc) => {
-//  console.log(`${doc.id} => ${doc.data()}`);
-//});
+type Home = NativeStackNavigationProp<RootStackParamList, 'Home'>
 
 export default function Home() {
     const [tarefas, setTerefas] = useState<ITarefa[]>([])
+    const navigator = useNavigation<Home>()
 
     const getTarefas = async () => {
         const dados = await getDocs(colecaoTarefas)
@@ -29,16 +29,12 @@ export default function Home() {
 
     }, [])
 
-    const navegarTelaCreateTask = () => {
-        const navigator = useNavigation()
-        navigator.navigate("CreateTask")
-    }
 
     return (
         <Conteiner>
             <StatusBar />
             <Header />
-            <FloatButton funcao={navegarTelaCreateTask()} />
+            <FloatButton funcao={()=> navigator.navigate("CreateTask")} />
             <Tarefas>
 
                 <FlatList
