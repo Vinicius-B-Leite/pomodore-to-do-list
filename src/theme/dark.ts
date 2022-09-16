@@ -1,7 +1,10 @@
 export const dark = {
     background: '#08080b',
-    backgroundItem: '#4f5057',
+    backgroundItem: '#3b3b40',
+    backgroundItemDesativo: '#222326',
     destaque: '#26bfca',
     text: '#ffffff',
-    delete: '#b61c16'
+    textoDesativo: '#3e3f42',
+    delete: '#b61c16',
+    desativo: '#4f5057'
 }

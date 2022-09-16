@@ -18,3 +18,6 @@ export const Conteiner = styled.View`
     background-color: ${({theme}) => theme.background};
     flex: 1;
 `
+export const Tarefas = styled.View`
+    padding: 5%;
+`
