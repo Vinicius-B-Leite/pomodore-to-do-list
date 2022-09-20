@@ -34,7 +34,7 @@ export default function Home() {
         <Conteiner>
             <StatusBar />
             <Header />
-            <FloatButton funcao={()=> navigator.navigate("CreateTask")} />
+            <FloatButton adicionar={true} funcao={()=> navigator.navigate("CreateTask")} />
             <Tarefas>
 
                 <FlatList
