@@ -1,6 +1,7 @@
 export type ITarefa = {
     descricao: string,
     status: string,
-    tempo: string,
-    id: string
+    tempoFoco: number,
+    tempoDescanso: number,
+    id?: string
 }

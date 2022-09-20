@@ -5,17 +5,17 @@ import { ThemeProvider } from 'styled-components';
 import ProvedorTema, { TemaConetxt } from './src/contexts/TemaContext';
 import Home from './src/screens/home';
 import { dark } from './src/theme/dark';
-import CreateTask from './src/screens/createTask';
 import Routes from './src/routes';
+import Contexts from './src/contexts';
 
 
 
 export default function App() {
   return ( 
-    <ProvedorTema>
+    <Contexts>
       <ThemeProvider theme={dark}>
         <Routes/>
       </ThemeProvider>
-    </ProvedorTema>
+    </Contexts>
   );
 }

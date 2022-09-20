@@ -1,16 +1,32 @@
-import { useState } from 'react'
-import React, { Text, View, TextInput, StatusBar, FlatList } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { addDoc } from 'firebase/firestore'
+import { useState, useContext } from 'react'
+import React, { View, StatusBar, FlatList, KeyboardAvoidingView, ToastAndroid } from 'react-native'
 import { useTheme } from 'styled-components'
 import FloatButton from '../../components/floatButton'
+import { AdmTarefaContext } from '../../contexts/AdmTarefaContext'
+import { colecaoTarefas } from '../../firebase/firebase'
 import { BotaoTempoTrabalho, BotaoTempoTrabalhoAtivo, Conteiner, ConteinerInput, ConteinerPomodoroConfig, ConteinerTexto, Input, OpcoesPomodoroConfig, Texto, TextoBotaoTempoTrabalho, TituloPomodoroConfig } from './styles'
 
 export default function CreateTask() {
 
-    const TempoTrabalho = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60]
+    const TempoTrabalho = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
     const theme = useTheme()
     const [tempoTrabalho, setTempoTrabalho] = useState<number>(25)
     const [tempoDescanso, setTempoDescanso] = useState<number>(5)
+    const [descricaoTarefa, setDescricaoTarefa] = useState<string>('')
+    const {setAdicionouTarefa} = useContext(AdmTarefaContext)
+
+    const adicionarTarefa = async () => {
+        await addDoc(colecaoTarefas, {
+            descricao: descricaoTarefa,
+            status: 'andamento',
+            tempoDescanso: tempoDescanso,
+            tempoFoco: tempoTrabalho
+        })
+        setDescricaoTarefa("")
+        setAdicionouTarefa(true)
+        ToastAndroid.show("Adicionado com sucesso", ToastAndroid.SHORT)
+    }
     return (
         <Conteiner>
             <StatusBar />
@@ -18,6 +34,8 @@ export default function CreateTask() {
                 <Input
                     placeholder='Tarefa...'
                     placeholderTextColor={theme.text}
+                    value={descricaoTarefa}
+                    onChangeText={setDescricaoTarefa}
                 />
             </ConteinerInput>
 
@@ -30,9 +48,10 @@ export default function CreateTask() {
                             <Texto>minu</Texto>
                         </ConteinerTexto>
                         <FlatList
+                            style={{ height: 40 }}
                             data={TempoTrabalho}
                             renderItem={item => {
-                                return item.index == tempoTrabalho ?
+                                return item.item == tempoTrabalho ?
                                     (
                                         <BotaoTempoTrabalhoAtivo>
                                             <TextoBotaoTempoTrabalho>{item.item}</TextoBotaoTempoTrabalho>
@@ -40,16 +59,15 @@ export default function CreateTask() {
                                     )
                                     :
                                     (
-                                        <BotaoTempoTrabalho onPress={() => setTempoTrabalho(item.index)}>
+                                        <BotaoTempoTrabalho onPress={() => setTempoTrabalho(item.item)}>
                                             <TextoBotaoTempoTrabalho>{item.item}</TextoBotaoTempoTrabalho>
                                         </BotaoTempoTrabalho>
                                     )
                             }
                             }
-                            ItemSeparatorComponent={(props) => <View style={{ width: '5%' }}></View>}
+                            keyExtractor={item => item.toString()}
                             horizontal={true}
                             showsHorizontalScrollIndicator={false}
-                            initialScrollIndex={25}
                         />
                     </View>
                     <View>
@@ -60,7 +78,7 @@ export default function CreateTask() {
                         <FlatList
                             data={TempoTrabalho}
                             renderItem={item => {
-                                return item.index == tempoTrabalho ?
+                                return item.item == tempoDescanso ?
                                     (
                                         <BotaoTempoTrabalhoAtivo>
                                             <TextoBotaoTempoTrabalho>{item.item}</TextoBotaoTempoTrabalho>
@@ -68,20 +86,21 @@ export default function CreateTask() {
                                     )
                                     :
                                     (
-                                        <BotaoTempoTrabalho onPress={() => setTempoDescanso(item.index)}>
+                                        <BotaoTempoTrabalho onPress={() => setTempoDescanso(item.item)}>
                                             <TextoBotaoTempoTrabalho>{item.item}</TextoBotaoTempoTrabalho>
                                         </BotaoTempoTrabalho>
                                     )
                             }
                             }
-                            ItemSeparatorComponent={(props) => <View style={{ width: '5%' }}></View>}
+                            keyExtractor={item => item.toString()}
+
                             horizontal={true}
                             showsHorizontalScrollIndicator={false}
                         />
                     </View>
                 </OpcoesPomodoroConfig>
             </ConteinerPomodoroConfig>
-            <FloatButton funcao={() => { }} adicionar={false} />
+            <FloatButton funcao={() => adicionarTarefa()} adicionar={false} />
         </Conteiner>
     )
 }

@@ -6,13 +6,14 @@ export const Swipe = styled.View`
     background-color: red;
     justify-content: center;
     flex: 1;
-`
+    `
 
 interface Props {
     status: string
 }
 export const ConteinerRoot = styled(GestureHandlerRootView)<Props>`
     width: 100%;
+    margin: 5px;
 `
 
 export const Conteiner = styled.View<Props>`
