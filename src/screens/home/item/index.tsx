@@ -9,11 +9,22 @@ import { Feather } from '@expo/vector-icons';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../../firebase/firebase';
 import { AdmTarefaContext } from '../../../contexts/AdmTarefaContext';
+import { useNavigation } from '@react-navigation/native'
+
+
+
+;
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../../routes/models';
 type Props = {
     dados: ITarefa
 }
+type Home = NativeStackNavigationProp<RootStackParamList, 'Home'>
+
 export default function Item({ dados }: Props) {
     const theme = useTheme()
+    const navigation = useNavigation<Home>()
+
     const { setExcluiuTarefa } = useContext(AdmTarefaContext)
     const deletarTarefa = async (id: string | undefined) => {
         if (id) {
@@ -36,7 +47,9 @@ export default function Item({ dados }: Props) {
 
                 <Conteiner >
                     <AntDesign name="checkcircle" size={24} color={dados.status == 'concluido' ? theme.destaque : theme.desativo} />
-                    <Botao status={dados.status}>
+                    <Botao status={dados.status} onPress={()=>{
+                        navigation.navigate('Pomodoro', {tarefa: dados})
+                    }}>
                         <Texto status={dados.status}>{dados.descricao}</Texto>
                     </Botao>
                 </Conteiner>
