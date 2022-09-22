@@ -12,7 +12,6 @@ type Props = {
 export default function Header({ tarefa }: Props) {
     const navigation = useNavigation()
     const theme = useTheme()
-    console.log(tarefa)
     return (
         <Conteiner>
 
@@ -20,7 +19,7 @@ export default function Header({ tarefa }: Props) {
                 <Ionicons name="arrow-back-outline" size={25} color={theme.text} />
             </TouchableOpacity>
 
-            <TituloTarefa>Nome da Tarefa</TituloTarefa>
+            <TituloTarefa>{tarefa.descricao}</TituloTarefa>
         </Conteiner>
     )
 }

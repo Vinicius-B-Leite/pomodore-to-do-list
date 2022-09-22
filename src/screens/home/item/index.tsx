@@ -9,13 +9,11 @@ import { Feather } from '@expo/vector-icons';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../../firebase/firebase';
 import { AdmTarefaContext } from '../../../contexts/AdmTarefaContext';
-import { useNavigation } from '@react-navigation/native'
-
-
-
-;
+import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../routes/models';
+
+
 type Props = {
     dados: ITarefa
 }

@@ -9,7 +9,7 @@ import { BotaoTempoTrabalho, BotaoTempoTrabalhoAtivo, Conteiner, ConteinerInput,
 
 export default function CreateTask() {
 
-    const TempoTrabalho = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
+    const TempoTrabalho = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
     const theme = useTheme()
     const [tempoTrabalho, setTempoTrabalho] = useState<number>(25)
     const [tempoDescanso, setTempoDescanso] = useState<number>(5)
