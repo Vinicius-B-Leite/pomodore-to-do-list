@@ -24,6 +24,7 @@ export default function Item({ dados }: Props) {
     const navigation = useNavigation<Home>()
 
     const { setExcluiuTarefa } = useContext(AdmTarefaContext)
+    
     const deletarTarefa = async (id: string | undefined) => {
         if (id) {
             const tarefa = doc(db, "tarefa", id)

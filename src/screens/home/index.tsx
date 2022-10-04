@@ -22,14 +22,16 @@ export default function Home() {
 
     const getTarefas = async () => {
         const dados = await getDocs(colecaoTarefas)
-        setTerefas(dados.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        setTerefas(dados.docs.map((doc) => ({ ...doc.data(), id: doc.id })).sort((a, b)=>{
+            if (a.status === 'concluido') return 1
+            else return -1
+        }))
     }
 
 
 
     useEffect(() => {
         getTarefas()
-        console.log(tarefas)
         setAdicionouTarefa(false)
         setExcluiuTarefa(false)
         setConcluiuTarefa(false)

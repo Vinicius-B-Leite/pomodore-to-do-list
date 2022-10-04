@@ -3,8 +3,8 @@ import styled from "styled-components/native";
 
 export const Botao = styled.TouchableOpacity`
     position: absolute;
-    width: 20%;
-    height: 11%;
+    width: 24%;
+    height: 13%;
     bottom: 5%;
     justify-content: center;
     align-items: center;
