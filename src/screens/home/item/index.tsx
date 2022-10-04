@@ -43,11 +43,10 @@ export default function Item({ dados }: Props) {
         <ConteinerRoot status={dados.status}>
             <Swipeable renderLeftActions={Excluir} onSwipeableOpen={() => deletarTarefa(dados.id)}>
 
-                <Conteiner >
+                <Conteiner status={dados.status}>
                     <AntDesign name="checkcircle" size={24} color={dados.status == 'concluido' ? theme.destaque : theme.desativo} />
-                    <Botao status={dados.status} onPress={()=>{
-                        navigation.navigate('Pomodoro', {tarefa: dados})
-                    }}>
+                    <Botao status={dados.status} onPress={() => dados.status !== 'concluido' && navigation.navigate('Pomodoro', { tarefa: dados })
+                    }>
                         <Texto status={dados.status}>{dados.descricao}</Texto>
                     </Botao>
                 </Conteiner>

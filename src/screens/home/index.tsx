@@ -18,7 +18,7 @@ export default function Home() {
     const [tarefas, setTerefas] = useState<ITarefa[]>([])
     const navigator = useNavigation<Home>()
     const [refresh, setRefresh] = useState(false)
-    const { adicionouTarefa, setAdicionouTarefa, excluiuTarefa, setExcluiuTarefa } = useContext(AdmTarefaContext)
+    const { adicionouTarefa, setAdicionouTarefa, excluiuTarefa, setExcluiuTarefa, concluiuTarefa, setConcluiuTarefa } = useContext(AdmTarefaContext)
 
     const getTarefas = async () => {
         const dados = await getDocs(colecaoTarefas)
@@ -29,9 +29,11 @@ export default function Home() {
 
     useEffect(() => {
         getTarefas()
+        console.log(tarefas)
         setAdicionouTarefa(false)
         setExcluiuTarefa(false)
-    }, [adicionouTarefa, excluiuTarefa, ])
+        setConcluiuTarefa(false)
+    }, [adicionouTarefa, excluiuTarefa, concluiuTarefa])
 
 
     return (

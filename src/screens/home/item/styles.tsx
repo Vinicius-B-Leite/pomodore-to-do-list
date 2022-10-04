@@ -19,14 +19,16 @@ export const ConteinerRoot = styled(GestureHandlerRootView)<Props>`
 export const Conteiner = styled.View<Props>`
     flex-direction: row;
     align-items: center;
-    background-color: ${(p) => p.status != 'andamento' ? p.theme.backgroundItemDesativo : p.theme.backgroundItem};
+    background-color: ${(p) => p.status == 'concluido' ? p.theme.backgroundItemDesativo : p.theme.backgroundItem};
     padding: 5%;
 `
 export const Botao = styled.TouchableOpacity`
     margin-left: 4%;
+    width: 100%;
 `
 
 export const Texto = styled.Text<Props>`
     font-size: 18px;
+    width: 100%;
     color: ${(p) => p.status != 'andamento' ? p.theme.textoDesativo : p.theme.text};
 `

@@ -1,12 +1,15 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
 import React from 'react-native'
-import { RouteProp, useRoute } from '@react-navigation/native'
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { ITarefa } from '../../types/ITarefa'
 import Header from './header'
 import { BotaoNormal, BotaoVazado, Conteiner, ConteinerBotoes, ConteinerCronometro, TextoBotaoNormal, TextoBotaoVazado } from './styles'
 import CircularProgress from 'react-native-circular-progress-indicator';
 import { useTheme } from 'styled-components'
 import { ProgressRef } from 'react-native-circular-progress-indicator';
+import { doc, setDoc, updateDoc } from 'firebase/firestore'
+import { db } from '../../firebase/firebase'
+import { AdmTarefaContext } from '../../contexts/AdmTarefaContext'
 
 
 
@@ -14,7 +17,9 @@ import { ProgressRef } from 'react-native-circular-progress-indicator';
 export default function Pomodoro() {
     const route: RouteProp<{ tarefa: { tarefa: ITarefa } }> = useRoute()
     const tarefa = route.params.tarefa
+    const navigation = useNavigation()
     const theme = useTheme()
+    const {setConcluiuTarefa} = useContext(AdmTarefaContext)
 
     const [tempo, setTempo] = useState<number>(tarefa.tempoFoco)
     const [minutos, setMinutos] = useState(tempo)
@@ -34,7 +39,7 @@ export default function Pomodoro() {
         return segundos
     }
     const calcularMilissegundos = (minutos: number) => {
-        let milissegunddos = minutos * 60 * 1000
+        let milissegunddos = calcularSegundos(minutos) * 1000
         return milissegunddos
     }
     const pausar = () => {
@@ -47,26 +52,39 @@ export default function Pomodoro() {
         setPause(true)
         progressRef.current?.pause()
     }
+    const concluir = async () => {
+        setSubtitle('Concluído')
+        if (tarefa.id) {
+            let document = doc(db, 'tarefa', tarefa.id)
+
+            await updateDoc(document, {status: 'concluido'})
+            setConcluiuTarefa(true)
+            navigation.goBack()
+        }
+
+    }
     const trocarTipoTempo = () => {
         setTempo(estaNoFoco ? tarefa.tempoDescanso : tarefa.tempoFoco)
-        setMinutos(tempo)
+        setMinutos(estaNoFoco ? tarefa.tempoDescanso : tarefa.tempoFoco)
         setSegundos(0)
-        setEstaNoFoco(false)
         setSubtitle(estaNoFoco ? 'Descanso' : 'Foco')
+        setEstaNoFoco(false)
+        progressRef.current?.reAnimate()
         pausar()
     }
     useEffect(() => {
+        setTimeout(() => {
+            if (!pause) {
 
-        if (!pause) {
-            setTimeout(() => {
-                if (segundos == 0) {
+                if (segundos === 0) {
                     setMinutos(m => m - 1)
                     setSegundos(59)
                     return
                 }
                 setSegundos(segundos - 1)
-            }, 1000)
-        }
+            }
+        }, 850)//compensar o delay
+
     }, [segundos])
     return (
         <Conteiner>
@@ -80,7 +98,7 @@ export default function Pomodoro() {
                     value={0}
                     maxValue={calcularSegundos(tempo)}
 
-                    radius={140}
+                    radius={170}
 
                     initialValue={calcularSegundos(tempo)}
                     duration={calcularMilissegundos(tempo)}
@@ -105,7 +123,7 @@ export default function Pomodoro() {
                     <TextoBotaoVazado>Pause</TextoBotaoVazado>
                 </BotaoVazado>
 
-                <BotaoNormal>
+                <BotaoNormal onPress={() => concluir()}>
                     <TextoBotaoNormal>Concluir</TextoBotaoNormal>
                 </BotaoNormal>
 
